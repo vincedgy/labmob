@@ -1,0 +1,37 @@
+<ion-side-menus enable-menu-with-back-views="false">
+    <ion-side-menu-content>
+        <ion-nav-bar class="bar-positive">
+            <ion-nav-back-button>
+            </ion-nav-back-button>
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                </button>
+            </ion-nav-buttons>
+        </ion-nav-bar>
+        <ion-nav-view name="menuContent"></ion-nav-view>
+    </ion-side-menu-content>
+    <ion-side-menu side="left">
+        <ion-header-bar class="bar-assertive">
+            <h1 class="title">labmob v{{version}}</h1>
+        </ion-header-bar>
+        <ion-content>
+            <ion-list>
+                <ion-item menu-close class="item item-icon-left" ng-click="login()">
+                    <i class="icon ion-person"></i>Login
+                </ion-item>
+                <ion-item menu-close class="item item-icon-left" href="#/app/search">
+                    <i class="icon ion-card"></i>Un distributeur
+                </ion-item>
+                <ion-item menu-close class="item item-icon-left" href="#/app/playlists">
+                    <i class="icon ion-bag"></i>Mes services
+                </ion-item>
+                <ion-item menu-close class="item item-icon-left" href="#/app/about">
+                    <i class="icon ion-help"></i>A propos
+                </ion-item>
+                <ion-item menu-close class="item item-icon-left" href="#/app/help">
+                    <i class="icon ion-help-buoy"></i>Support
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>

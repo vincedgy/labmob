@@ -1,0 +1,21 @@
+<ion-view view-title="Distributeur">
+    <ion-content>
+        <img src="img/hsbc_sm_010.png" width="80" style="float:right" alt="HSBC" />
+        <h3>Un distributeur dans le coin ?</h3>
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">Votre ville :</span>
+                <input type="text" id="autocomplete" ng-model="city" placeholder="Une ville ou localisez...">
+            </label>
+        </div>
+        <div class="button-bar">
+            <a class="button button-positive" ng-click="search()">Rechercher</a>
+            <a class="button button-calm" ng-click="locate()">Localiser</a>
+        </div>
+        <div>
+            <p>lgn:{{longitude}}, lat:{{latitude}}, weather:{{weather}}</p>
+            <p ng-if="distanceKm > 0">Distance = {{distanceKm}} Km</p>
+        </div>
+        <div id="map" data-tap-disable="true"></div>
+    </ion-content>
+</ion-view>
