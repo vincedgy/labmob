@@ -15,7 +15,7 @@
         'ionic'                       // Ionic
         , 'labmob.controllers'        // Controllers
         , 'labmob.FirebaseSrvModule'  // Firebase services
-        , 'firebase'                  // Angulafire services
+        //, 'firebase'                  // Angulafire services
         , 'labmob.GoogleMapsAPISrvModule' // Google
         , 'labmob.WeatherServices'          // Weather services
         ]);
