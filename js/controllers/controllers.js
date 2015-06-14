@@ -1,5 +1,9 @@
 (function() {
     'use strict';
+    
+    // Application Modules
+    angular.module('labmob.controllers', []);
+
     angular.module('labmob.controllers')
         .controller('AppCtrl', AppCtrl);
     

@@ -7,28 +7,28 @@
 (function() {
     'use strict';
 
-    // Application Modules
-    angular.module('labmob.controllers', []);
-
+   
     // Module dependencies
     var labmodApp = angular.module('labmob', [
         'ionic'                       // Ionic
+        ,'ngCordova'                  // ngCordova
         , 'labmob.controllers'        // Controllers
         , 'labmob.FirebaseSrvModule'  // Firebase services
-        , 'firebase'                  // Angulafire services
+        //, 'firebase'                  // Angulafire services
         , 'labmob.GoogleMapsAPISrvModule' // Google
         , 'labmob.WeatherServices'          // Weather services
         ]);
 
     // Application constants
     labmodApp.constant("CONFIG", {
-        VERSION: "0.0.1",
+        VERSION: "0.0.3",
+        GOOGLE_API: "",
         FIREBASE_URL: "https://labmob.firebaseio.com/",
         WEATHER_URL: "http://api.openweathermap.org/data/2.5/weather"
     });
 
     // Application run event
-    labmodApp.run(function($ionicPlatform) {
+    labmodApp.run(function($ionicPlatform, $timeout, $state) {
         $ionicPlatform.ready(function() {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -39,6 +39,9 @@
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
+            $timeout(function() {
+                $state.go('app.search');
+                }, 1000);
         });
     });
 
@@ -102,7 +105,7 @@
             });
 
         // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/app/search');
+        $urlRouterProvider.otherwise('/app/playlists');
     });
 
 })();
