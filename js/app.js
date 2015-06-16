@@ -25,7 +25,7 @@
         GOOGLE_API: "",
         FIREBASE_URL: "https://labmob.firebaseio.com/",
         WEATHER_URL: "http://api.openweathermap.org/data/2.5/weather",
-        TIMEOUT:2000
+        TIMEOUT:20
     });
 
     // Application run event
@@ -40,9 +40,9 @@
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
-            $timeout(function() {
+            /*$timeout(function() {
                 $state.go('app.search');
-                }, 1000);
+                }, 1000);*/
         });
     });
 

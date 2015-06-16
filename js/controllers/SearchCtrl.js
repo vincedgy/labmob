@@ -66,10 +66,8 @@
             });
             if (navigator.geolocation) {
                 // Start geolocation
-                
-                $ionicBackdrop.retain();
-                
                 var timer = $timeout(
+                    function() {
                     navigator.geolocation.getCurrentPosition(function(position) {
                         // Get Location and save result
                         geolocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -90,19 +88,24 @@
                             }, function(reason) {
                                  vm.weather = "n/a";
                             });
-                        
                         // Automatic search after locate
-                        search(vm.longitude, vm.latitude, map);
-                        
-                        // Stop overlay
+                        search(vm.longitude, vm.latitude, map);                                                                    
+                        });
+                    return;
+                    }, 
+                    CONFIG.TIMEOUT);    
+                    timer.then(function() {
+                        console.log("1");                        
                         $ionicLoading.hide();
-                        $ionicBackdrop.release();
-                        
-                        return;
-                    }), 
-                    CONFIG.TIMEOUT, false);                    
-                    
+                    }, function(reason) {
+                        console.log("2");
+                        $ionicPopup.alert({
+                            title: 'Recherche trop longue',
+                            template: "Désolé !"
+                        });
+                    });                                
             }
+            return;
         };
 
         // ======================================================================================
