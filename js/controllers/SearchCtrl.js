@@ -10,16 +10,15 @@
 
     function SearchCtrl($scope, $http, $ionicLoading, $ionicPopup, $q, WeatherServices) {
 
-        var map, geolocation, marker;
-        var lastInfowindow, currentRadius;
-        currentRadius = "1000";
-        $scope.markers=[];
-
+        var map, geolocation, marker, lastInfowindow, autocomplete;
+        
         $ionicLoading.show({
             template: 'Loading...'
         });
-
+        
         // $scope
+        $scope.currentRadius = "1000";
+        $scope.markers=[];
         $scope.city = "";
         $scope.longitude = 0.0;
         $scope.latitude = 0.0;
@@ -27,7 +26,6 @@
         $scope.weather = "?";
 
         // Define Autocomplete for city field        
-        var autocomplete;
         if (google) {
             autocomplete = new google.maps.places.Autocomplete(
                 document.getElementById('autocomplete'), {
@@ -42,8 +40,10 @@
                     $scope.latitude = place.geometry.location.lat();
                     $scope.longitude = place.geometry.location.lng();
                     geolocation = new google.maps.LatLng(place.geometry.location.lat(), place.geometry.location.lng());
-                    placeMarker(geolocation, autocomplete);                      
-                }
+                    placeMarker(geolocation, autocomplete); 
+                    search($scope.longitude, $scope.latitude, map);
+                    $scope.$apply();                    
+                }        
                 return;
             });
 
@@ -62,9 +62,9 @@
             }
         };
 
-             // Locate action current device position 
+        // Locate action current device position 
         $scope.locate = function() {
-            $scope.city = "";
+            $scope.city = "";            
             $ionicLoading.show({
                 template: 'Locating...'
             });
@@ -93,7 +93,6 @@
                     $ionicLoading.hide();
                 });
             }
-
         };
 
         // ======================================================================================
@@ -117,8 +116,7 @@
                 }]
             };
             map = new google.maps.Map(document.getElementById('map'), myOptions);
-            
-            
+
             marker = new google.maps.Marker({
                 position: geolocation,
                 map: map,
@@ -174,7 +172,7 @@
             // Create request
             var request = {
                 location: geolocation,
-                radius: currentRadius,
+                radius: $scope.currentRadius,
                 types: ["atm"],
                 keyword:"hsbc",
                 name:"hsbc"
@@ -189,7 +187,7 @@
                 } else {
                     $ionicPopup.alert({
                         title: 'Recherche infructueuse',
-                        template: "Aucun DAB HSBC à moins de "+ currentRadius + "m de votre position."
+                        template: "Aucun DAB HSBC à moins de "+ $scope.currentRadius + "m de votre position."
                     });
                 }
             });

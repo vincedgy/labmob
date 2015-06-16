@@ -1,21 +1,24 @@
-<ion-view view-title="Distributeur">
+<ion-view view-title="Géolocalisation">
     <ion-content>
-        <img src="img/hsbc_sm_010.png" width="80" style="float:right" alt="HSBC" />
-        <h3>Un distributeur dans le coin ?</h3>
+        
+        <h4>Une agence HSBC par ici ?
+            <img src="img/hsbc_sm_010.png" width="50" style="float:right" alt="HSBC"></img>
+        </h4>
         <div class="list">
-            <label class="item item-input">
-                <span class="input-label">Votre ville :</span>
-                <input type="text" id="autocomplete" ng-model="city" placeholder="Une ville ou localisez...">
-            </label>
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper">
+                    <i class="icon ion-ios-search placeholder-icon"></i>
+                    <input type="text" id="autocomplete" size="100%" ng-model="city">                   
+                </label>
+                <a class="button button-icon icon ion-location" ng-click="locate()"></a>
+            </div>            
         </div>
-        <div class="button-bar">
-            <a class="button button-positive" ng-click="search()">Rechercher</a>
-            <a class="button button-calm" ng-click="locate()">Localiser</a>
-        </div>
-        <div>
-            <p>lgn:{{longitude}}, lat:{{latitude}}, weather:{{weather}}</p>
-            <p ng-if="distanceKm > 0">Distance = {{distanceKm}} Km</p>
-        </div>
+        <!--div class="button-bar"-->
+            <!--a class="button icon-right ion-search button-positive" ng-click="search()">Rechercher</a-->
+            
+        <!--/div-->
+
         <div id="map" data-tap-disabled="true"></div>
+
     </ion-content>
 </ion-view>

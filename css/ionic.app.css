@@ -7677,8 +7677,9 @@ a.button {
 
 #map {
   position: absolute;
-  top: 240px;
+  top: 90px;
+  border: 1px solid #f8f8f8;
   left: 0;
   width: 100%;
-  height: 320px;
+  height: 450px;
   z-index: 0; }

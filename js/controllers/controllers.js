@@ -1,16 +1,17 @@
 (function() {
     'use strict';
-    
+
     // Application Modules
     angular.module('labmob.controllers', []);
 
     angular.module('labmob.controllers')
         .controller('AppCtrl', AppCtrl);
-    
+
     // ----------------------------------------------------------------------------------//
     /* @ngInject */
-    AppCtrl.$inject = ['$scope', '$ionicModal', '$timeout', 'CONFIG'];
-    function AppCtrl($scope, $ionicModal, $timeout, CONFIG) {
+    AppCtrl.$inject = ['$scope', '$ionicModal', '$timeout', 'CONFIG', '$cordovaDevice', '$ionicPlatform'];
+
+    function AppCtrl($scope, $ionicModal, $timeout, CONFIG, $cordovaDevice, $ionicPlatform) {
 
         // With the new view caching in Ionic, Controllers are only called
         // when they are recreated or on app start, instead of every page change.
@@ -20,6 +21,7 @@
         //});
 
         $scope.version = CONFIG.VERSION;
+       
 
         // Form data for the login modal
         $scope.loginData = {};
@@ -51,7 +53,22 @@
                 $scope.closeLogin();
             }, 1000);
         };
+
+        // get device details
+        $ionicPlatform.ready(function() {
+            /*
+            if ($cordovaDevice) {
+                $scope.device = $cordovaDevice.getDevice();
+                $scope.cordova = $cordovaDevice.getCordova();
+                $scope.model = $cordovaDevice.getModel();
+                $scope.platform = $cordovaDevice.getPlatform();
+                $scope.uuid = $cordovaDevice.getUUID();
+                $scope.version = $cordovaDevice.getVersion();
+            }
+            */
+        });
+
     };
 
-  
+
 })();
