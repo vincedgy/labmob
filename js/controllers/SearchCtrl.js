@@ -1,3 +1,4 @@
+/* global google */
 (function() {
     'use strict';
 
@@ -6,24 +7,20 @@
 
     // ----------------------------------------------------------------------------------//
     /* @ngInject */
-    SearchCtrl.$inject = ['$scope', '$http', '$ionicLoading', '$ionicPopup', '$q', 'WeatherServices'];
+    SearchCtrl.$inject = ['CONFIG', '$ionicBackdrop','$timeout', '$ionicLoading', '$ionicPopup', '$q', 'WeatherServices'];
 
-    function SearchCtrl($scope, $http, $ionicLoading, $ionicPopup, $q, WeatherServices) {
-
+    function SearchCtrl(CONFIG, $ionicBackdrop, $timeout, $ionicLoading, $ionicPopup, $q, WeatherServices) {
+        var vm = this;
         var map, geolocation, marker, lastInfowindow, autocomplete;
-        
-        $ionicLoading.show({
-            template: 'Loading...'
-        });
+        var markers=[];
         
         // $scope
-        $scope.currentRadius = "1000";
-        $scope.markers=[];
-        $scope.city = "";
-        $scope.longitude = 0.0;
-        $scope.latitude = 0.0;
-        $scope.distanceKm = 0.0;
-        $scope.weather = "?";
+        vm.currentRadius = "1000";
+        vm.city = "";
+        vm.longitude = 0.0;
+        vm.latitude = 0.0;
+        vm.distanceKm = 0.0;
+        vm.weather = "?";
 
         // Define Autocomplete for city field        
         if (google) {
@@ -36,24 +33,22 @@
                 // Get the place details from the autocomplete object.
                 var place = autocomplete.getPlace();
                 if (place && place.geometry) {
-                    $scope.city = place.name;
-                    $scope.latitude = place.geometry.location.lat();
-                    $scope.longitude = place.geometry.location.lng();
+                    vm.city = place.name;
+                    vm.latitude = place.geometry.location.lat();
+                    vm.longitude = place.geometry.location.lng();
                     geolocation = new google.maps.LatLng(place.geometry.location.lat(), place.geometry.location.lng());
                     placeMarker(geolocation, autocomplete); 
-                    search($scope.longitude, $scope.latitude, map);
-                    $scope.$apply();                    
+                    search(vm.longitude, vm.latitude, map);
+                    vm.$apply();                    
                 }        
                 return;
             });
-
-
-        }
+        };
 
         // Search Function
-        $scope.search = function() {
-            if (map && $scope.city && $scope.city !== "") {
-                search($scope.longitude, $scope.latitude, map);
+        vm.search = function() {
+            if (map && vm.city && vm.city !== "") {
+                search(vm.longitude, vm.latitude, map);
             } else {
                 $ionicPopup.alert({
                     title: 'Oops !',
@@ -63,35 +58,50 @@
         };
 
         // Locate action current device position 
-        $scope.locate = function() {
-            $scope.city = "";            
+        vm.locate = function() {
+            vm.city = "";   
+            // Start overlay         
             $ionicLoading.show({
                 template: 'Locating...'
             });
             if (navigator.geolocation) {
                 // Start geolocation
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    // Get Location and save result
-                    geolocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                    $scope.longitude = position.coords.longitude;
-                    $scope.latitude = position.coords.latitude;
-                    map = placeMarker(geolocation, autocomplete);
-                    // Get location details
-                    getDetailsFromLocation(geolocation)
-                        .then(function(data) {
-                            $scope.city = data;
-                        }, function(reason) {
-                            $scope.city = reason;
-                        });
-                    // Get weather
-                    WeatherServices.getWeather(position.coords.latitude, position.coords.longitude)
-                        .then(function(data) {
-                            $scope.weather = data;
-                        })
-                    // Automatic search after locate
-                    search($scope.longitude, $scope.latitude, map);
-                    $ionicLoading.hide();
-                });
+                
+                $ionicBackdrop.retain();
+                
+                var timer = $timeout(
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        // Get Location and save result
+                        geolocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                        vm.longitude = position.coords.longitude;
+                        vm.latitude = position.coords.latitude;
+                        map = placeMarker(geolocation, autocomplete);
+                        // Get location details
+                        getDetailsFromLocation(geolocation)
+                            .then(function(data) {
+                                vm.city = data;
+                            }, function(reason) {
+                                vm.city = reason;
+                            });
+                        // Get weather
+                        WeatherServices.getWeather(position.coords.latitude, position.coords.longitude)
+                            .then(function(data) {
+                                vm.weather = data;
+                            }, function(reason) {
+                                 vm.weather = "n/a";
+                            });
+                        
+                        // Automatic search after locate
+                        search(vm.longitude, vm.latitude, map);
+                        
+                        // Stop overlay
+                        $ionicLoading.hide();
+                        $ionicBackdrop.release();
+                        
+                        return;
+                    }), 
+                    CONFIG.TIMEOUT, false);                    
+                    
             }
         };
 
@@ -134,7 +144,7 @@
 
             // 
             google.maps.event.addListener(map, 'bounds_changed', function () {                
-                //search($scope.longitude, $scope.latitude, map);
+                //search(vm.longitude, vm.latitude, map);
             });
 
             // Return the map
@@ -162,8 +172,6 @@
             return deferred.promise;
         }
 
-   
-
         var search = function(longitude, latitude, map) {
             $ionicLoading.show({
                 template: 'Searching...'
@@ -172,7 +180,7 @@
             // Create request
             var request = {
                 location: geolocation,
-                radius: $scope.currentRadius,
+                radius: vm.currentRadius,
                 types: ["atm"],
                 keyword:"hsbc",
                 name:"hsbc"
@@ -187,7 +195,7 @@
                 } else {
                     $ionicPopup.alert({
                         title: 'Recherche infructueuse',
-                        template: "Aucun DAB HSBC à moins de "+ $scope.currentRadius + "m de votre position."
+                        template: "Aucun DAB HSBC à moins de "+ vm.currentRadius + "m de votre position."
                     });
                 }
             });
@@ -204,7 +212,7 @@
                     animation: google.maps.Animation.DROP,
                     draggable:false,
                 });
-                $scope.markers.push(marker);
+                markers.push(marker);
 
                 // on Mouseover
                 google.maps.event.addListener(marker, 'click', function() {
@@ -230,8 +238,7 @@
 
             // Stop 
             $ionicLoading.hide();
-
-        }
+        };
 
         $ionicLoading.hide();
 

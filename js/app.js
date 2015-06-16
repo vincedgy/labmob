@@ -24,7 +24,8 @@
         VERSION: "0.0.3",
         GOOGLE_API: "",
         FIREBASE_URL: "https://labmob.firebaseio.com/",
-        WEATHER_URL: "http://api.openweathermap.org/data/2.5/weather"
+        WEATHER_URL: "http://api.openweathermap.org/data/2.5/weather",
+        TIMEOUT:2000
     });
 
     // Application run event
@@ -61,7 +62,7 @@
                 views: {
                     'menuContent': {
                         templateUrl: "templates/search.html",
-                        controller: 'SearchCtrl'
+                        controller : 'SearchCtrl as vm'
                     }
                 }
             })
