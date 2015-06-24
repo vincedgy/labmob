@@ -6,12 +6,13 @@
 
     // ----------------------------------------------------------------------------------//
     /* @ngInject */
-    PlaylistCtrl.$inject = ['$scope', '$stateParams'];
-    function PlaylistCtrl($scope, $stateParams) {
+    PlaylistCtrl.$inject = ['$stateParams','FirebaseService'];
+    function PlaylistCtrl($stateParams, FirebaseService) {
+        var vm = this;
         var myFirebaseRef = new Firebase("https://labmob.firebaseio.com/");
-        $scope.playlist = $stateParams.playlistId;
-        myFirebaseRef.child("location/city").on("value", function(snapshot) {
-            $scope.playlist = $stateParams.playlistId + ":" + snapshot.val();
+        vm.playlist = $stateParams.playlistId;
+        FirebaseService.get().child("location/city").on("value", function(snapshot) {
+            vm.playlist = $stateParams.playlistId + ":" + snapshot.val();
         });
 
     };

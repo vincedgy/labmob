@@ -25,7 +25,7 @@
         GOOGLE_API: "",
         FIREBASE_URL: "https://labmob.firebaseio.com/",
         WEATHER_URL: "http://api.openweathermap.org/data/2.5/weather",
-        TIMEOUT:20
+        TIMEOUT: 2000
     });
 
     // Application run event
@@ -40,9 +40,11 @@
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
-            /*$timeout(function() {
+            
+            // Default to search function
+            $timeout(function() {
                 $state.go('app.search');
-                }, 1000);*/
+                }, 1000);
         });
     });
 
@@ -90,7 +92,7 @@
                 views: {
                     'menuContent': {
                         templateUrl: "templates/playlists.html",
-                        controller: 'PlaylistsCtrl'
+                        controller: 'PlaylistsCtrl as vm'
                     }
                 }
             })
@@ -100,7 +102,7 @@
                 views: {
                     'menuContent': {
                         templateUrl: "templates/playlist.html",
-                        controller: 'PlaylistCtrl'
+                        controller: 'PlaylistCtrl as vm'
                     }
                 }
             });

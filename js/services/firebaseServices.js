@@ -15,7 +15,7 @@
         
         var FirebaseService = {
             // Singleton
-            getFirebase: function() {
+            get: function() {
                 if (that.firebase) {
                     return that.firebase;
                 } else {
@@ -27,7 +27,7 @@
             set: function(object) {
                 var deferred = $q.defer();
                 if (object) {
-                    this.getFirebase().set(object, function(error) {
+                    this.get().set(object, function(error) {
                         if (error) {
                             deferred.reject(error);
                         } else {
