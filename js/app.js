@@ -21,11 +21,11 @@
 
     // Application constants
     labmodApp.constant("CONFIG", {
-        VERSION: "0.0.3",
+        VERSION: "0.0.4",
         GOOGLE_API: "",
         FIREBASE_URL: "https://labmob.firebaseio.com/",
         WEATHER_URL: "http://api.openweathermap.org/data/2.5/weather",
-        TIMEOUT: 2000
+        TIMEOUT: 5000
     });
 
     // Application run event

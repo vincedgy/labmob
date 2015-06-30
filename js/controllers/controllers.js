@@ -22,6 +22,12 @@
 
         $scope.appVersion = CONFIG.VERSION;
        
+        $scope.device = "";
+        $scope.cordova = "";
+        $scope.model = "";
+        $scope.platform = "";
+        $scope.uuid = "";
+        $scope.version = "";
 
         // Form data for the login modal
         $scope.loginData = {};
@@ -57,7 +63,7 @@
         // get device details
         $ionicPlatform.ready(function() {
             
-            if ($cordovaDevice) {
+            if ( $cordovaDevice !== undefined ) {
                 $scope.device = $cordovaDevice.getDevice();
                 $scope.cordova = $cordovaDevice.getCordova();
                 $scope.model = $cordovaDevice.getModel();

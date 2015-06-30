@@ -63,21 +63,21 @@
         vm.locate = function() {
             if (navigator.geolocation) {
                 // Reset input
-                vm.city = "Recherche...";
-                // Start overlay         
-                $ionicLoading.show({
-                    template: 'Locating...'
-                });
+                vm.city = "";
                 // Start geolocation
                 var getPosition = function() {
+                    // Start overlay         
+                    $ionicLoading.show({
+                        template: 'Locating...'
+                    });                    
                     return navigator.geolocation.getCurrentPosition(
                         geoLocCallBack,
                         geoLocError,
                         // Options
                         {
-                            enableHighAccuracy: false,
-                            timeout: CONFIG.TIMEOUT,
-                            maximumAge: 0
+                            enableHighAccuracy: true,
+                            timeout: CONFIG.TIMEOUT || 5000,
+                            maximumAge: 3000
                         });
                 };
 
@@ -127,21 +127,20 @@
                     // Alerting user
                     $ionicPopup.alert({
                         title: 'Geolocalisation error',
-                        template: reason.message
+                        template: reason.code + ":" + reason.message
                     });
                     return;
                 };
 
                 var timer = $timeout(getPosition, 500);
-                timer.then(function() {
+                /*timer.then(function() {
                     $ionicLoading.hide();
                 }, function(reason) {
-                    console.log("2");
                     $ionicPopup.alert({
                         title: 'Recherche trop longue',
                         template: "Désolé !"
                     });
-                });
+                });*/
             }
             return;
         };
